@@ -10,8 +10,18 @@ interface CubeRemovedColors {
     red?: boolean;
 }
 
-export function buildLittleCube(removedColors?: CubeRemovedColors){
+interface Position {
+    x?: number;
+    y?: number;
+    z?: number;
+}
+
+export function buildLittleCube(position: Position, removedColors?: CubeRemovedColors){
     let colorsToRemove = removedColors || {};
+
+    let x = position.x || 0.0;
+    let y = position.y || 0.0;
+    let z = position.z || 0.0;
 
     let blue = colorsToRemove['blue'] ?  0 : 0x0000FF;
     let green = colorsToRemove['green'] ?  0 : 0x00FF00;
@@ -30,6 +40,10 @@ export function buildLittleCube(removedColors?: CubeRemovedColors){
         new THREE.MeshBasicMaterial({color: red}),
     ]);
     let cube = new THREE.Mesh( geometry, material );
+
+    cube.position.x = x;
+    cube.position.y = y;
+    cube.position.z = z;
 
     return cube;
 }
