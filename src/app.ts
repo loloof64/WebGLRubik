@@ -13,6 +13,7 @@ let material = new THREE.MeshBasicMaterial( {color: 0x00FF00} );
 let cube = new THREE.Mesh( geometry, material );
 scene.add(cube);
 camera.position.z = 5;
+renderer.setClearColor (0xcc6600, 1);
 
 function render(){
     requestAnimationFrame(render);
