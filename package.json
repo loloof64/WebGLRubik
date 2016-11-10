@@ -1,0 +1,22 @@
+{
+  "name": "rubik-cube",
+  "version": "1.0.0",
+  "description": "A simple Rubik's Cube game.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/loloof64/WebGLRubik.git"
+  },
+  "main": "bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rubik"
+  ],
+  "author": "Laurent Bernabe <laurent.bernabe@gmail.com>",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "three": "^0.82.1",
+    "ts-loader": "^1.1.0"
+  }
+}
