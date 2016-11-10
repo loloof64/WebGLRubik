@@ -9,7 +9,7 @@ let renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild( renderer.domElement );
 
-let cube = buildLittleCube();
+let cube = buildLittleCube({white: true});
 scene.add(cube);
 camera.position.z = 5;
 renderer.setClearColor (0xcc6600, 1);
