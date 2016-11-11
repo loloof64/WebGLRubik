@@ -16,7 +16,12 @@ interface Position {
     z?: number;
 }
 
-export function buildLittleCube(position: Position, removedColors?: CubeRemovedColors){
+interface Rotation {
+    axis: THREE.Vector3;
+    angleRad: number;
+}
+
+function buildLittleCube(position: Position, removedColors?: CubeRemovedColors){
     let colorsToRemove = removedColors || {};
 
     let x = position.x || 0.0;
@@ -46,4 +51,91 @@ export function buildLittleCube(position: Position, removedColors?: CubeRemovedC
     cube.position.z = z;
 
     return cube;
+}
+
+let rubik_cubes_bottom_back = [
+    buildLittleCube({x: -1.07, y: -1.07, z: -1.07}, {blue : true, orange: true, white: true}),
+    buildLittleCube({x: 0, y: -1.07, z: -1.07}, {blue : true, orange: true, white: true, green: true}),
+    buildLittleCube({x: 1.07, y: -1.07, z: -1.07}, {orange: true, white: true, green: true})
+];
+
+let rubik_cubes_bottom_middle = [
+    buildLittleCube({x: -1.07, y: -1.07, z: 0}, {blue : true, orange: true, white: true, red: true}),
+    buildLittleCube({x: 0, y: -1.07, z: 0}, {blue : true, orange: true, white: true, green: true, red: true}),
+    buildLittleCube({x: 1.07, y: -1.07, z: 0}, {orange: true, white: true, green: true, red: true})
+];
+
+let rubik_cubes_bottom_front = [
+    buildLittleCube({x: -1.07, y: -1.07, z: 1.07}, {blue : true, white: true, red: true}),
+    buildLittleCube({x: 0, y: -1.07, z: 1.07}, {blue : true, white: true, green: true, red: true}),
+    buildLittleCube({x: 1.07, y: -1.07, z: 1.07}, {white: true, green: true, red: true})
+];
+
+let rubik_cubes_middle_back = [
+    buildLittleCube({x: -1.07, y: 0, z: -1.07}, {blue : true, orange: true, white: true, yellow: true}),
+    buildLittleCube({x: 0, y: 0, z: -1.07}, {blue : true, orange: true, white: true, green: true, yellow: true}),
+    buildLittleCube({x: 1.07, y: 0, z: -1.07}, {orange: true, white: true, green: true, yellow: true})
+];
+
+let rubik_cubes_middle_middle = [
+    buildLittleCube({x: -1.07, y: 0, z: 0}, {blue : true, orange: true, white: true, red: true, yellow: true}),
+    buildLittleCube({x: 0, y: 0, z: 0}, {blue : true, orange: true, white: true, green: true, red: true, yellow: true}),
+    buildLittleCube({x: 1.07, y: 0, z: 0}, {orange: true, white: true, green: true, red: true, yellow: true})
+];
+
+let rubik_cubes_middle_front = [
+    buildLittleCube({x: -1.07, y: 0, z: 1.07}, {blue : true, white: true, red: true, yellow: true}),
+    buildLittleCube({x: 0, y: 0, z: 1.07}, {blue : true, white: true, green: true, red: true, yellow: true}),
+    buildLittleCube({x: 1.07, y: 0, z: 1.07}, {white: true, green: true, red: true, yellow: true})
+];
+
+let rubik_cubes_top_back = [
+    buildLittleCube({x: -1.07, y: 1.07, z: -1.07}, {blue : true, orange: true, yellow: true}),
+    buildLittleCube({x: 0, y: 1.07, z: -1.07}, {blue : true, orange: true, green: true, yellow: true}),
+    buildLittleCube({x: 1.07, y: 1.07, z: -1.07}, {orange: true, green: true, yellow: true})
+];
+
+let rubik_cubes_top_middle = [
+    buildLittleCube({x: -1.07, y: 1.07, z: 0}, {blue : true, orange: true, red: true, yellow: true}),
+    buildLittleCube({x: 0, y: 1.07, z: 0}, {blue : true, orange: true, green: true, red: true, yellow: true}),
+    buildLittleCube({x: 1.07, y: 1.07, z: 0}, {orange: true, green: true, red: true, yellow: true})
+];
+
+let rubik_cubes_top_front = [
+    buildLittleCube({x: -1.07, y: 1.07, z: 1.07}, {blue : true, red: true, yellow: true}),
+    buildLittleCube({x: 0, y: 1.07, z: 1.07}, {blue : true, green: true, red: true, yellow: true}),
+    buildLittleCube({x: 1.07, y: 1.07, z: 1.07}, {green: true, red: true, yellow: true})
+];
+
+let rubik_cubes_cubes = [
+    [rubik_cubes_bottom_back, rubik_cubes_bottom_middle, rubik_cubes_bottom_front],
+    [rubik_cubes_middle_back, rubik_cubes_middle_middle, rubik_cubes_middle_front],
+    [rubik_cubes_top_back, rubik_cubes_top_middle, rubik_cubes_top_front]
+];
+
+let wholeRubik = new THREE.Object3D();
+
+export function addWholeRubikGroupToScene(scene: THREE.Scene){
+    for (let layer of rubik_cubes_cubes){
+        for (let stick of layer){
+            for (let cube of stick){
+                wholeRubik.add(cube);
+            }
+        }
+    }
+    scene.add(wholeRubik);
+}
+
+export function addCubesToScene(scene: THREE.Scene){
+    for (let layer of rubik_cubes_cubes){
+        for (let stick of layer){
+            for (let cube of stick){
+                scene.add(cube);
+            }
+        }
+    }
+}
+
+export function rotateWholeCube(rotation: Rotation){
+    wholeRubik.rotateOnAxis(rotation.axis, rotation.angleRad);
 }
